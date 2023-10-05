@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getUsers } from '../../api/users';
 
 export const Users = () => {
@@ -23,6 +24,7 @@ export const Users = () => {
     setUserName('');
   };
 
+
   return (
     <div>
       <h1> Users GitHub </h1>
@@ -41,12 +43,12 @@ export const Users = () => {
       <h2>Users found</h2>
           <div>
             <ul>
-              { userData.length > 0 && userData.slice(0, 10).map((user, index) => (
+              { userData.length > 0 && userData.slice(0, 10).map((user) => (
               <li key={user.id}>
-                <p>{ index + 1 }</p>
-                <p>Name User: { user.login }</p>
-                <p>Score: { user.score }</p>
-                <p>Avatar:{ user.avatar_url }</p>
+                <Link to={`/profile/${user.login}`}>
+                  <p>ID: { user.id }</p>
+                  <p>Name User: { user.login }</p>
+                </Link>
               </li>
             ))}
         </ul>
