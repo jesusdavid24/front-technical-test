@@ -39,21 +39,23 @@ export const Users = () => {
           />  
         <button type='submit'>Search</button>
       </form>
-      <div>
-      <h2>Users found</h2>
+      {userData.length > 0 && ( 
+        <div>
+          <h2>Users found</h2>
           <div>
             <ul>
-              { userData.length > 0 && userData.slice(0, 10).map((user) => (
-              <li key={user.id}>
-                <Link to={`/profile/${user.login}`}>
-                  <p>ID: { user.id }</p>
-                  <p>Name User: { user.login }</p>
-                </Link>
-              </li>
-            ))}
-        </ul>
-      </div>
-      </div>
+              {userData.slice(0, 10).map((user) => (
+                <li key={user.id}>
+                  <Link to={`/profile/${user.login}`}>
+                    <p>ID: {user.id}</p>
+                    <p>Name User: {user.login}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   )
 };
