@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const URL = `${import.meta.env.VITE_BASE_URL_GITHUB}`;
-console.log(URL);
 
 export const getUsers = async (userName) => {
   try {

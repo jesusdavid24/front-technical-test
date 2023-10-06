@@ -6,8 +6,6 @@ export const Profile = () => {
   const { userName } = useParams();
   const [userData, setUserData] = useState({});
 
-  console.log(userData);
-
   useEffect(() => {
     ( async function fetchUserProfile() {
       if(userName) {
@@ -17,8 +15,6 @@ export const Profile = () => {
       fetchUserProfile();
     })();
   }, [userName])
-
-
 
   return (
     <div>
