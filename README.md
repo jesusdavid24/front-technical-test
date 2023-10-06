@@ -31,25 +31,25 @@ In summary, this application streamlines the process of searching for GitHub pro
 
 ```
 git clone https://github.com/jesusdavid24/front-technical-test.git
+```
 
 2. Execute npm install
-```
 
+```
 npm install
-
 ```
+
 3. Configure the .env
-```
 
+```
 VITE_BASE_URL=http://localhost:3002/api
 VITE_BASE_URL_GITHUB=https://api.github.com
-
 ```
+
 4. Execute the project
+
 ```
-
 npm run dev
-
 ```
 
 ## Built with 🛠️
@@ -66,5 +66,3 @@ _Menciona las herramientas que utilizaste para crear tu proyecto_
 ## Licencia 📄
 
 [MIT](LICENSE)
-
-```
