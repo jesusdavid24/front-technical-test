@@ -1,8 +1,10 @@
-import { useState} from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Chart } from "react-charts";
 import { getUsers } from '../../api/users';
 import { validateField } from '../../utils/validateField';
-import { Graphics } from '../Graphics';
+
+//import { Graphics } from '../Graphics';
 import './index.scss';
 
 export const Users = () => {
@@ -45,6 +47,51 @@ export const Users = () => {
     setErrors('');
   };
 
+  // if(userData && userData.length > 0) {
+  //   console.log(userData[0].login);
+  // }
+
+  const GITHUB_TOKEN = "";
+
+  const headers = {};
+  
+  if (GITHUB_TOKEN) {
+    headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
+  }
+
+  const primaryAxis = useMemo(() => ({ getValue: (datum) => datum.login }), []);
+  const secondaryAxes = useMemo(
+    () => [{ getValue: (datum) => datum.followers, elementType: "bar" }],
+    []
+  );
+
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    async function load() {
+      if(userData && userData.length > 0 ) {
+        const userLogin = userData[0].login;
+          const url = `https://api.github.com/search/users?q=${userLogin}&per_page=10`;
+          console.log(url);
+          const response = await fetch(url, { headers });
+          const githubUsers = await response.json();
+
+          const promises = [];
+          for (let i = 0; i < githubUsers.items.length; i++) {
+            const githubUser = githubUsers.items[i];
+            promises.push(
+              fetch(`https://api.github.com/users/${githubUser.login}`, {
+                headers
+              }).then((response) => response.json())
+            );
+          }
+          const ghUsers = await Promise.all(promises);
+          setUsers(ghUsers);
+        }
+      }
+
+    load();
+  }, []);
+
   return (
     <div className="users">
       <div className="users__container">
@@ -80,7 +127,22 @@ export const Users = () => {
               </ul>
             </div>
             <div className="users__container__data__graphic">
-              <Graphics />
+            <div className="App">
+              {users.map((user) => (
+                <div key={user.login}>
+                  {user.login}: {user.followers}
+                </div>
+              ))}
+              {users && users.length ? (
+                <Chart
+                  options={{
+                    data: [{ label: "Users", data: users }],
+                    primaryAxis,
+                    secondaryAxes
+                  }}
+                />
+              ) : null}
+            </div>
             </div>
           </div>
         )}
