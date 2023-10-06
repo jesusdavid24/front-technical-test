@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserProfile } from '../../api/users';
+import { saveUsers } from '../../api/saveUsers';
 import './index.scss';
-//import { Graphics } from "../Graphics";
 
 export const Profile = () => {
   const { userName } = useParams();
   const [userData, setUserData] = useState([]);
-  console.log('data', userData);
 
   useEffect(() => {
     async function fetchUserProfile() {
@@ -23,6 +22,24 @@ export const Profile = () => {
     fetchUserProfile();
   }, [userName]);
 
+  const handleSubmit = async (event) => {
+
+    event.preventDefault()
+
+    const {avatar_url, name, followers} = userData;
+
+    const user = {
+      avatar_url,
+      name,
+      followers,
+    };
+
+    const data = await saveUsers(user);
+
+    return data;
+
+  };
+
   return (
     <div className="card">
       <div className="card__container">
@@ -33,9 +50,9 @@ export const Profile = () => {
               <img src={userData.avatar_url} alt={userData.name} />
             </div>
             <p className="card__container__name">{ userData.name }
-              <span>{ userData.company }</span>
             </p>
             <p className="card__container__followers">Followers: { userData.followers }</p>
+            <button type="submit" onClick={handleSubmit}>Export</button>
           </div>
         )}
         </div>
