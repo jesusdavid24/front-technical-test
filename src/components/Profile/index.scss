@@ -1,0 +1,65 @@
+.card {
+  padding: 5rem;
+  width: 100%;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+
+    &__client {
+      background: #2cb5a0;
+      width: 13rem;
+      padding-top: 25px;
+      padding-bottom: 25px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border: 4px solid #7cdacc;
+      box-shadow: 0 6px 10px rgba(207, 212, 222, 1);
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+      font-family: "Poppins", sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    &__client:hover {
+      transform: translateY(-10px);
+    }
+
+    &__picture {
+      overflow: hidden;
+      object-fit: cover;
+      width: 5rem;
+      height: 5rem;
+      border: 4px solid #7cdacc;
+      border-radius: 999px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+    }
+    
+    &__picture img {
+      width: 7.5rem;
+      fill: currentColor;
+    }
+
+    &__name {
+      margin: 0;
+      margin-top: 20px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    &__folloers, 
+    &__name span {
+      display: block;
+      margin-top: 10px;
+      font-weight: 200;
+      font-size: 16px;
+    }
+  }
+}
