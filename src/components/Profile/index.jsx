@@ -15,7 +15,7 @@ export const Profile = () => {
           const userProfileData = await getUserProfile(userName);
           setUserData(userProfileData);
         } catch (error) {
-          console.error("Error al obtener el perfil del usuario:", error);
+          console.error("Error obtaining user profile:", error);
         }
       }
     }

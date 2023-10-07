@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { Chart } from "react-charts";
 import { getUsers } from '../../api/users';
 import { validateField } from '../../utils/validateField';
-
-//import { Graphics } from '../Graphics';
 import './index.scss';
 
 export const Users = () => {
@@ -47,10 +45,6 @@ export const Users = () => {
     setErrors('');
   };
 
-  // if(userData && userData.length > 0) {
-  //   console.log(userData[0].login);
-  // }
-
   const GITHUB_TOKEN = "";
 
   const headers = {};
@@ -71,10 +65,8 @@ export const Users = () => {
       if(userData && userData.length > 0 ) {
         const userLogin = userData[0].login;
           const url = `https://api.github.com/search/users?q=${userLogin}&per_page=10`;
-          console.log(url);
           const response = await fetch(url, { headers });
           const githubUsers = await response.json();
-
           const promises = [];
           for (let i = 0; i < githubUsers.items.length; i++) {
             const githubUser = githubUsers.items[i];
