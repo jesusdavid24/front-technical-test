@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { getUserProfile } from '../../api/users';
 import { saveUsers } from '../../api/saveUsers';
 import './index.scss';
@@ -42,6 +43,8 @@ export const Profile = () => {
 
   return (
     <div className="card">
+      <h1>Profile User</h1>
+      <Link to="/"><span>Go to Home</span></Link>
       <div className="card__container">
         <div className="card__container__client">
         {userData && (

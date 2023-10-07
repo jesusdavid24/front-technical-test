@@ -1,6 +1,15 @@
 .card {
   padding: 5rem;
   width: 100%;
+  text-align: center;
+
+  span {
+    text-decoration: underline;
+  }
+
+  span:hover {
+    color: blue;
+  }
 
   &__container {
     display: flex;

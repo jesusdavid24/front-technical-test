@@ -8,8 +8,10 @@ import './index.scss';
 export const Users = () => {
 
   const [userName, setUserName] = useState('');
-  const [userData, setUserData]=useState([]);
+  const [userData, setUserData] = useState([]);
   const [errors, setErrors] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [users, setUsers] = useState([]);
 
   const handleChange = (event) => {
 
@@ -25,33 +27,47 @@ export const Users = () => {
     });
   };
 
+  const fetchGitHubUsers = async (githubUserLogin) => {
+    if (!githubUserLogin) {
+      return;
+    }
+
+    const url = `https://api.github.com/search/users?q=${githubUserLogin}&per_page=10`;
+    const response = await fetch(url);
+    const githubUsers = await response.json();
+
+    const promises = githubUsers.items.map((githubUser) =>
+      fetch(`https://api.github.com/users/${githubUser.login}`).then((response) =>
+        response.json()
+      )
+    );
+
+    const ghUsers = await Promise.all(promises);
+    setUsers(ghUsers);
+  };
+
   const handleSearch = async (event) => {
     event.preventDefault();
 
     if (userName.length < 4 || userName === 'doublevpartners') {
       setErrors({
         ...errors,
-        userName: 'Searching with less than 4 characters or the word "doublevpartners" is not allowed.'
+        userName: 'Searching with less than 4 characters or the word "doublevpartners" is not allowed.',
       });
       return;
     }
 
+    setIsLoading(true);
+
     const data = await getUsers(userName);
 
     setUserData(data);
-
     setUserName('');
-
     setErrors('');
+    setIsLoading(false);
+
+    fetchGitHubUsers(data[0].login);
   };
-
-  const GITHUB_TOKEN = "";
-
-  const headers = {};
-  
-  if (GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
-  }
 
   const primaryAxis = useMemo(() => ({ getValue: (datum) => datum.login }), []);
   const secondaryAxes = useMemo(
@@ -59,30 +75,11 @@ export const Users = () => {
     []
   );
 
-  const [users, setUsers] = useState([]);
   useEffect(() => {
-    async function load() {
-      if(userData && userData.length > 0 ) {
-        const userLogin = userData[0].login;
-          const url = `https://api.github.com/search/users?q=${userLogin}&per_page=10`;
-          const response = await fetch(url, { headers });
-          const githubUsers = await response.json();
-          const promises = [];
-          for (let i = 0; i < githubUsers.items.length; i++) {
-            const githubUser = githubUsers.items[i];
-            promises.push(
-              fetch(`https://api.github.com/users/${githubUser.login}`, {
-                headers
-              }).then((response) => response.json())
-            );
-          }
-          const ghUsers = await Promise.all(promises);
-          setUsers(ghUsers);
-        }
-      }
-
-    load();
-  }, []);
+    if (userData && userData.length > 0) {
+      fetchGitHubUsers(userData[0].login); 
+    }
+  }, [userData]);
 
   return (
     <div className="users">
@@ -101,6 +98,7 @@ export const Users = () => {
             onChange={handleChange}
             />  
           <button type='submit'>Search</button>
+          {isLoading && <p>Loading...</p>}
           {errors.userName && <p style={{ color: 'red' }}>{errors.userName}</p>}
         </form>
         {userData.length > 0 && ( 
@@ -119,22 +117,22 @@ export const Users = () => {
               </ul>
             </div>
             <div className="users__container__data__graphic">
-            <div className="App">
-              {users.map((user) => (
-                <div key={user.login}>
-                  {user.login}: {user.followers}
-                </div>
-              ))}
-              {users && users.length ? (
-                <Chart
-                  options={{
-                    data: [{ label: "Users", data: users }],
-                    primaryAxis,
-                    secondaryAxes
-                  }}
-                />
-              ) : null}
-            </div>
+              <div className="users__container__data__graphic__name">
+                {users.map((user) => (
+                  <div key={user.login}>
+                    {user.login}: {user.followers}
+                  </div>
+                ))}
+                {users && users.length ? (
+                  <Chart
+                    options={{
+                      data: [{ label: "Users", data: users }],
+                      primaryAxis,
+                      secondaryAxes
+                    }}
+                  />
+                ) : null}
+              </div>
             </div>
           </div>
         )}

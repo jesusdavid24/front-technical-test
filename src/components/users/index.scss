@@ -1,5 +1,5 @@
 .users {
-  padding: 7.5%;
+  padding: 5rem;
   width: 100%;
 
   &__container {
@@ -7,6 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 2rem;
     width: 100%;
     height: 100vh;
 
@@ -87,6 +88,17 @@
           display: flex;
           flex-direction: column;
           gap: 10px;
+
+          li {
+
+            p {
+              cursor: pointer;
+            }
+
+            p:hover {
+              color: blue;
+            }
+          }
         }
       }
 
@@ -95,7 +107,29 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
+
+        &__name {
+          margin-bottom: 6rem
+        }
       }
     }
   }
 };
+
+@media (max-width: 1024px) {
+  .users {
+    padding: 2rem;
+
+    &__container {
+      margin-top: 5rem;
+
+      &__data {
+        display: block;
+
+        &__graphic {
+          margin-top: 30px;
+        }
+      }
+    }
+  }
+}
